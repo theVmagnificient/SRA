@@ -85,6 +85,16 @@ public:
   // Get the names of the output layers
   std::vector<std::string> get_outputs_names( VOID );
 
+  // Get processed objects vector
+  std::vector<utils::detected_object> & get_processed_objects( VOID )
+  {
+    return processedObjects;
+  } /* End of 'get_processed_objects' function */
+
+  std::vector<utils::detected_object> & operator>>( std::vector<utils::detected_object> &_dest )
+  {
+    _dest = processedObjects;
+  } /* End of 'operator>>' function */
   
 }; /* End of 'dnn_model' class */
 
