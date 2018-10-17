@@ -1,4 +1,4 @@
-// Tracking module
+// positioning module
 // Programmer: VP1
 // Date: 17.10.2018
 
@@ -7,7 +7,7 @@
 #include <cstring>
 #include <string>
 
-class tracking
+class positioning
 {
   double H,  // H of camera
     Xl, Yl,  // local X and Y
@@ -28,7 +28,7 @@ public:
   // x1 y1 - local X and Y
   // x2 y2 - global X and Y
   // m - Matrix
-  tracking( double h1 = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0, double *m = nullptr ) : H(h1), Xl(x1), Yl(y1), Xg(x2), Yg(y2)
+  positioning( double h1 = 0, double x1 = 0, double y1 = 0, double x2 = 0, double y2 = 0, double *m = nullptr ) : H(h1), Xl(x1), Yl(y1), Xg(x2), Yg(y2)
   {
     if (m != nullptr)
       memcpy(M, m, sizeof(double) * 16);
