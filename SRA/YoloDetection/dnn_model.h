@@ -17,6 +17,7 @@
 #include <opencv2/core/types_c.h>
 
 #include "utils.h"
+#include "../Camera/camera.h"
 
 
 // dnn descriptor and initializer
@@ -30,9 +31,7 @@ private:
 
   FLOAT confThreshold;        // confidence threshold
   FLOAT nmsThreshold;         // non-maximum suppression threshold
- 
-
-
+  cv::Mat frame;              // frame matrix
 
 protected:
   cv::dnn::Net *YoloNet;             // yolo net instance
@@ -80,10 +79,16 @@ public:
   } /* End of 'set_preferable_target' function */
 
   // remove the bounding boxes with low confidence using non-maxima suppression
-  VOID postprocess(cv::Mat &frame, const std::vector<cv::Mat> &outs);
+  VOID postprocess(camera &cam, const std::vector<cv::Mat> &outs);
 
   // Get the names of the output layers
   std::vector<std::string> get_outputs_names( VOID );
+
+  // Get output classes names
+  std::vector<std::string> & get_classes_names( VOID )
+  {
+    return classes;
+  }
 
   // Get processed objects vector
   std::vector<utils::detected_object> & get_processed_objects( VOID )

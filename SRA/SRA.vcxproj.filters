@@ -16,6 +16,15 @@
     <Filter Include="Header Files\YOLO">
       <UniqueIdentifier>{06eeec4f-9719-4d59-be77-b9e759df35ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Positioning">
+      <UniqueIdentifier>{d8ca9fa5-e0c9-4761-916f-d284e1b5ca28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{245d4f78-7dd7-486b-b06d-23b5a2332345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Detector Pool">
+      <UniqueIdentifier>{3ad7ea4f-b074-43d8-92cc-0cc9ce077bb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="YoloDetection\detector.h">
@@ -27,6 +36,15 @@
     <ClInclude Include="YoloDetection\dnn_model.h">
       <Filter>Header Files\YOLO</Filter>
     </ClInclude>
+    <ClInclude Include="Positioning\positioning.h">
+      <Filter>Header Files\Positioning</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DetectorPool\det_pool.h">
+      <Filter>Header Files\Detector Pool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRA.cpp">
@@ -34,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="YoloDetection\dnn_model.cpp">
       <Filter>Header Files\YOLO</Filter>
+    </ClCompile>
+    <ClCompile Include="DetectorPool\det_pool.cpp">
+      <Filter>Header Files\Detector Pool</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

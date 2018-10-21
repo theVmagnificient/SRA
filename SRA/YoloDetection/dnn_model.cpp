@@ -6,12 +6,13 @@
 
 // remove the bounding boxes with low confidence using non-maxima suppression
 // and save processed obects to dnn_model::processedObjects
-VOID dnn_model::postprocess( cv::Mat &frame, const std::vector<cv::Mat> &outs )
+VOID dnn_model::postprocess( camera &cam, const std::vector<cv::Mat> &outs )
 {
   std::vector<int> classIds;
   std::vector<float> confidences;
   std::vector<cv::Rect> boxes;
 
+  frame = cam.GetCurFrame();
   for (size_t i = 0; i < outs.size(); ++i)
   {
     // Scan through all the bounding boxes output from the network and keep only the
@@ -49,7 +50,7 @@ VOID dnn_model::postprocess( cv::Mat &frame, const std::vector<cv::Mat> &outs )
   cv::dnn::NMSBoxes(boxes, confidences, confThreshold, nmsThreshold, indices);
 
   // clear objects from prev step
-  processedObjects.clear();
+  cam.clear_obj();
   for (size_t i = 0; i < indices.size(); ++i)
   {
     int idx = indices[i];
@@ -61,9 +62,7 @@ VOID dnn_model::postprocess( cv::Mat &frame, const std::vector<cv::Mat> &outs )
     obj.box = box;
     obj.classId = classIds[idx];
     obj.conf = confidences[idx];
-
-    
-    processedObjects.push_back(obj);  // save processed boxes to objects
+    cam << obj;  // save processed boxes to camera's vector
   }
 } /* End of 'postprocess' function */
 

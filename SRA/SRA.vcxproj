@@ -156,11 +156,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera\camera.h" />
+    <ClInclude Include="DetectorPool\det_pool.h" />
+    <ClInclude Include="Positioning\positioning.h" />
     <ClInclude Include="YoloDetection\detector.h" />
     <ClInclude Include="YoloDetection\dnn_model.h" />
     <ClInclude Include="YoloDetection\utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DetectorPool\det_pool.cpp" />
     <ClCompile Include="SRA.cpp" />
     <ClCompile Include="YoloDetection\dnn_model.cpp" />
   </ItemGroup>
