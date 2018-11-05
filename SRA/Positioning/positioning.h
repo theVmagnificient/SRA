@@ -6,6 +6,13 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
+#include <opencv2\core.hpp>
+
+struct ZONE
+{
+  std::vector<cv::Point> Corners;
+  cv::Scalar Color;
+};                 // Zones
 
 class positioning
 {
@@ -22,6 +29,25 @@ class positioning
     return std::make_pair(a / w, b / w);
   }
 
+  std::vector<ZONE> Zones; // All zones
+
+  bool IsPointInZone(int ZoneNum, cv::Point Point)
+  {
+    bool c = false;
+    double y = Point.y;
+    double x = Point.x;
+    for (int i = 0, j = Zones[ZoneNum].Corners.size() - 1; i < Zones[ZoneNum].Corners.size(); j = i++)
+    {
+      double ypi = Zones[ZoneNum].Corners[i].y;
+      double xpi = Zones[ZoneNum].Corners[i].x;
+      double ypj = Zones[ZoneNum].Corners[j].y;
+      double xpj = Zones[ZoneNum].Corners[j].x;
+      if ((((ypi <= y) && (y<ypj)) || ((ypj <= y) && (y<ypi))) &&
+        (x >(xpj - xpi) * (y - ypi) / (ypj - ypi) + xpi))
+        c = !c;
+    }
+    return c;
+  }
 public:
   // Constructor
   // h1 - H of camera
@@ -51,6 +77,37 @@ public:
     }
   }
 
+  /* Load all Zones */
+  VOID LoadZones(const std::string &FName)
+  {
+    FILE *F;
+    if ((F = fopen(FName.c_str(), "r")) != NULL)
+    {
+      CHAR Buf[600] = { 0 };
+      ZONE tmp;
+      while (fgets(Buf, 599, F))
+      {
+        if (Buf[0] == 'z')
+        {
+          if (tmp.Corners.size() != 0)
+          {
+            Zones.push_back(tmp);
+            tmp = ZONE();
+          }
+        }
+        else
+        {
+          int x = 0, y = 0;
+          sscanf(Buf, "%i %i", &x, &y);
+          tmp.Corners.push_back(cv::Point(x, y));
+        }
+      }
+      if (tmp.Corners.size() != 0)
+        Zones.push_back(tmp);
+      fclose(F);
+    }
+  }
+
   // Transform coordinates of pixel to coordinates of world
   // In - coordinates
   // Hh - Human height
@@ -60,5 +117,14 @@ public:
     auto B = std::make_pair(FacePosition.first - Xl, FacePosition.second - Yl);
     double B1 = 1.0 - Hh / H;
     return std::make_pair(B.first * B1 + Xl + Xg, B.second * B1 + Yl + Yg);
+  }
+
+  // Get Number of Zone or -1 if no Zone
+  INT GetZone(std::pair<double, double> Point)
+  {
+    for (int i = 0; i < Zones.size(); i++)
+      if (IsPointInZone(i, cv::Point(Point.first, Point.second)))
+        return i;
+    return -1;
   }
 };
